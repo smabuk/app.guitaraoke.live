@@ -1,6 +1,7 @@
+@using Microsoft.AspNetCore.Http.HttpResults;
 @inject ISongDatabase db;
 @inject IUserTracker tracker;
-@inject HttpClient http;
+@* @inject HttpClient http; *@
 <a class="fa-star @starStyle" @onclick="ToggleStar"></a>
 
 @code {
@@ -16,8 +17,10 @@
 	private string starStyle => IsStarred ? STARRED : NORMAL;
 
 	private async Task ToggleStar() {
-		IsStarred = !IsStarred;
 		// var response = await http.PostAsJsonAsync($"/star/{Slug}", IsStarred);
-		await SongEndpoints.ToggleSongStar(Slug, db, tracker);
+		var response = await SongEndpoints.ToggleSongStar(Slug, db, tracker);
+		if (response is Ok<bool> isStarred) {
+			IsStarred = isStarred.Value;
+		}
 	}
 }
