@@ -1,18 +1,11 @@
 @foreach (var item in CheckableInstruments) {
 	<label for="instrument-@item.Instrument">
 		@item.Instrument.GetDisplayName()
-		<input type="checkbox" id="instrument-@item.Instrument" @bind="item.IsSelected" />
+		<input type="checkbox" id="instrument-@item.Instrument" @onchange="(e) => OnCheckboxChange(item, e)"/>
 	</label>
 	<br />
 }
 <br />
-@{
-	Instruments = CheckableInstruments
-		.Where(cb => cb.IsSelected)
-		.Select(val => val.Instrument)
-		.Aggregate((Instrument)0, (result, value) => result | value);
-	var _ = Task.Run(() => UpdateParent());
-}
 
 @code {
 	[Parameter, EditorRequired]
@@ -30,8 +23,13 @@
 		}
 	}
 
-	private async Task UpdateParent()
+	private async Task OnCheckboxChange(CheckableInstrument item, ChangeEventArgs e)
 	{
+		item.IsSelected = !item.IsSelected;
+		Instruments = CheckableInstruments
+			.Where(cb => cb.IsSelected)
+			.Select(val => val.Instrument)
+			.Aggregate((Instrument)0, (result, value) => result | value);
 		await InstrumentsChanged.InvokeAsync(Instruments);
 	}
 
