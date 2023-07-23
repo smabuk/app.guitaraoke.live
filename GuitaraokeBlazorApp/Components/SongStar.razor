@@ -1,5 +1,6 @@
 @inject ISongDatabase db;
 @inject IUserTracker tracker;
+@inject HttpClient http;
 <a class="fa-star @starStyle" @onclick="ToggleStar"></a>
 
 @code {
@@ -16,6 +17,7 @@
 
 	private async Task ToggleStar() {
 		IsStarred = !IsStarred;
+		// var response = await http.PostAsJsonAsync($"/star/{Slug}", IsStarred);
 		await SongEndpoints.ToggleSongStar(Slug, db, tracker);
 	}
 }

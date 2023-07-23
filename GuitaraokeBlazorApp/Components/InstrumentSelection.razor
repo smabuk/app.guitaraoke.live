@@ -1,4 +1,3 @@
-@attribute [RenderModeServer]
 @foreach (var item in CheckableInstruments) {
 	<label for="instrument-@item.Instrument">
 		@item.Instrument.GetDisplayName()
@@ -16,13 +15,11 @@
 }
 
 @code {
-	[Parameter]
-	[EditorRequired]
+	[Parameter, EditorRequired]
 	public Instrument Instruments { get; set; }
 
 	[Parameter]
 	public EventCallback<Instrument> InstrumentsChanged { get; set; }
-
 
 	List<CheckableInstrument> CheckableInstruments { get; set; } = new();
 

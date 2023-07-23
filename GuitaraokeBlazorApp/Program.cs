@@ -8,6 +8,8 @@ builder.Services.AddRazorComponents()
 	.AddServerComponents()
 	.AddWebAssemblyComponents();
 
+builder.Services.AddHttpClient();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICookieJar, HttpCookieJar>();
 builder.Services.AddScoped<IUserTracker, HttpCookieUserTracker>();
@@ -34,7 +36,7 @@ app.UseStaticFiles();
 
 app.MapRazorComponents<App>()
 	.AddServerRenderMode()
-	.AddWebAssemblyRenderMode(); ;
+	.AddWebAssemblyRenderMode();
 
 app.MapSongEndpoints();
 app.MapBackstageEndpoints();
